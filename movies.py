@@ -91,7 +91,7 @@ def add_movie(movies):
     movie = get_info_from_api(search_title)
     if movie:
         rating = movie["Ratings"][0]["Value"].split("/")[0] if movie["Ratings"] else 0 # TODO: handle non existing rating more gracefully
-        storage.add_movie(movie["Title"], rating, movie["Year"], movie["Poster"])
+        storage.add_movie(movie["Title"], rating, movie["Year"], movie["Poster"], movie["imdbID"])
         print(f"Movie '{movie["Title"]}' successfully added")
     else:
         print("Movie not found!")
@@ -253,10 +253,11 @@ def generate_website(movies):
         """Generates an HTML string representing a movie card with a given title and details.
         The card is styled with specific classes to be displayed as a website.
         """
+        imdb_url = 'https://www.imdb.com/title/' + info['imdb_id']
         content = ""
         content += '<div>'
         content += '<div class="movie">'
-        content += f'<div class="movie-poster"><img src="{info['poster']}" title="{title}"/></div>'
+        content += f'<div class="movie-poster"><a href="{imdb_url}" target="_blank"><img src="{info['poster']}" title="{title}"/></a></div>'
         content += f'<div class="movie-info">'
         content += f'<div class="movie-title">{title}</div>'
         content += f'<div class="movie-details">'

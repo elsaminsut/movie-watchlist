@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, text
 
 # database URL
-DB_URL = "sqlite:///movie_storage/movies.db"
+DB_URL = "sqlite:///movies.db"
 
 # create engine
 engine = create_engine(DB_URL) # , echo=True
@@ -14,7 +14,8 @@ with engine.connect() as connection:
             title TEXT UNIQUE NOT NULL,
             year INTEGER NOT NULL,
             rating REAL NOT NULL,
-            poster TEXT NOT NULL
+            poster TEXT NOT NULL,
+            imdb_id TEXT NOT NULL
         )
     """))
     connection.commit()
@@ -23,17 +24,24 @@ def list_movies():
     """Retrieve all movies from the database. Returns a dictionary with movie titles as keys and
     their ratings as values."""
     with engine.connect() as connection:
-        result = connection.execute(text("SELECT title, year, rating, poster FROM movies"))
+        result = connection.execute(text("SELECT title, year, rating, poster, imdb_id FROM movies"))
         movies = result.fetchall()
 
-    return {row[0]: {"year": row[1], "rating": row[2], "poster": row[3]} for row in movies}
+    return {row[0]: {
+        "year": row[1],
+        "rating": row[2],
+        "poster": row[3],
+        "imdb_id": row[4]
+    }
+        for row in movies
+    }
 
-def add_movie(title, rating, year, poster):
+def add_movie(title, rating, year, poster, imdb_id):
     """Add a new movie to the database."""
     with engine.connect() as connection:
         try:
-            connection.execute(text("INSERT INTO movies (title, year, rating, poster) VALUES (:title, :year, :rating, :poster)"),
-                               {"title": title, "year": year, "rating": rating, "poster": poster})
+            connection.execute(text("INSERT INTO movies (title, year, rating, poster, imdb_id) VALUES (:title, :year, :rating, :poster, :imdb_id)"),
+                               {"title": title, "year": year, "rating": rating, "poster": poster, "imdb_id": imdb_id})
             connection.commit()
         except Exception as e:
             print(f"Error: {e}")
