@@ -21,10 +21,8 @@ The goal is not just to build a movie database app, but also to experiment with 
 ## Technologies Used
 
 - Python
-- SQLite
-- SQLAlchemy
-- HTML
-- CSS
+- SQLite, SQLAlchemy
+- HTML, CSS
 - Matplotlib
 - Requests
 
