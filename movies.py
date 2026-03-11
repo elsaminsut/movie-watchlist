@@ -1,10 +1,13 @@
+from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 import movie_storage_sql as storage
+import os
 import random
 import requests
 import statistics
 
-API_KEY = "8e266b6e"
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 API_URL = f"http://www.omdbapi.com/?apikey={API_KEY}&t="
 
 def exit_menu():
@@ -293,8 +296,11 @@ def show_histogram(movies):
 
 
 def main():
-    """Main body of the movie project. Displays a choice menu and executes different functions
-    related to the movie database based on such choice."""
+    """Main body of the movie watchlist. Initializes a manu for users to interact with a movie database.
+    The user can display the movies in the database and perform CRUD operations on it. There are also
+    sorting and filtering options, as well as the possibility of exporting to an HTML file to visualize
+    the database in a website.
+    """
     choice_dict = {"0": (exit_menu, "Exit"),
     "1": (list_movies, "List movies"),
     "2": (add_movie, "Add movie"),
