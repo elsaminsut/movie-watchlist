@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
-import movie_storage_sql as storage
+from movie_storage import movie_storage_sql as storage
 import os
 import random
 import requests
